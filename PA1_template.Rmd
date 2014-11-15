@@ -2,7 +2,9 @@
 title: "Reproducible Research Peer Ass. 1"
 author: "Bentley"
 date: "November 15, 2014"
-output: html_document
+output:
+  html_document:
+    keep_md: yes
 ---
 
 The following analysis is conducted on observations that occurred over a period of 61 days on a single subject.
@@ -21,24 +23,25 @@ activity<- read.csv("~/Documents/R Working Directory/Coursera/Scripts/RepResProj
 activity$steps<-as.numeric(activity$steps)  ## converting the steps variable to class numeric
 activity$date<-as.Date(activity$date)     ## converting the date variable to class date
 activity$interval<-as.numeric(activity$interval)  ## converting the interval variable to class numeric
+activitycomp<-activity[complete.cases(activity),]  ## removing the NAs
 ```
 
 What is the mean total number of steps taken per day?
 
 ```{r plottinghistogram}
-hist(tapply(as.numeric(activity$steps),activity$date,FUN=sum))
+hist(tapply(as.numeric(activitycomp$steps),activitycomp$date,FUN=sum))
 ```
 
 ### The mean steps per day are as follows:
 
 ```{r}
-meansteps<-aggregate(activity$steps ~ activity$date,FUN=mean)
+meansteps<-aggregate(activitycomp$steps ~ activitycomp$date,FUN=mean)
 print(meansteps)
 ```
 
 ### The median steps per day are as follows:
 
 ```{r}
-mediansteps<-aggregate(activity$steps ~ activity$date,FUN=median)
+mediansteps<-aggregate(activitycomp$steps ~ activitycomp$date,FUN=median)
 print(mediansteps)
 ```
