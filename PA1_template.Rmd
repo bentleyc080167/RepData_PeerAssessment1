@@ -26,7 +26,7 @@ activity$interval<-as.numeric(activity$interval)  ## converting the interval var
 activitycomp<-activity[complete.cases(activity),]  ## removing the NAs
 ```
 
-What is the mean total number of steps taken per day?
+## What is the mean total number of steps taken per day?
 
 ```{r plottinghistogram}
 hist(tapply(as.numeric(activitycomp$steps),activitycomp$date,FUN=sum))
@@ -45,3 +45,15 @@ print(meansteps)
 mediansteps<-aggregate(activitycomp$steps ~ activitycomp$date,FUN=median)
 print(mediansteps)
 ```
+## What is the average daily activity pattern?
+
+```{r timeseriesplot}
+timeseries<-aggregate(activitycomp$steps ~ activitycomp$interval,FUN=mean)
+colnames(timeseries)<-c('interval','meansteps') # naming the columns
+plot(timeseries$interval,timeseries$meansteps,type="l")
+```
+
+```{r}
+maxinterval <-timeseries[timeseries$meansteps==max(timeseries$meansteps),1]
+```
+The 5-minute interval, on average across all the days in the dataset, that contains the maximum number of steps is `r maxinterval`
