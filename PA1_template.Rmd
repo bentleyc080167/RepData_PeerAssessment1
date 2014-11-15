@@ -1,25 +1,44 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+title: "Reproducible Research Peer Ass. 1"
+author: "Bentley"
+date: "November 15, 2014"
+output: html_document
 ---
 
+The following analysis is conducted on observations that occurred over a period of 61 days on a single subject.
+Steps were recorded continuously and summed into 5 minute time intervals.
+Each time interval was recorded in the hhmm format with no padding e.g. 00:00 as 0 and 23:30 as 2330
 
-## Loading and preprocessing the data
+Loading and preprocessing the data
 
-
-
-## What is mean total number of steps taken per day?
-
-
-
-## What is the average daily activity pattern?
-
+```{r loadlibraries}
+library(xtable)  ##  install xtable to be able to present tables in a neat format
+```
 
 
-## Imputing missing values
+```{r loadthedata}
+activity<- read.csv("~/Documents/R Working Directory/Coursera/Scripts/RepResProject1/activity.csv", colClasses = "character")
+activity$steps<-as.numeric(activity$steps)  ## converting the steps variable to class numeric
+activity$date<-as.Date(activity$date)     ## converting the date variable to class date
+activity$interval<-as.numeric(activity$interval)  ## converting the interval variable to class numeric
+```
 
+What is the mean total number of steps taken per day?
 
+```{r plottinghistogram}
+hist(tapply(as.numeric(activity$steps),activity$date,FUN=sum))
+```
 
-## Are there differences in activity patterns between weekdays and weekends?
+### The mean steps per day are as follows:
+
+```{r}
+meansteps<-aggregate(activity$steps ~ activity$date,FUN=mean)
+print(meansteps)
+```
+
+### The median steps per day are as follows:
+
+```{r}
+mediansteps<-aggregate(activity$steps ~ activity$date,FUN=median)
+print(mediansteps)
+```
